@@ -16,8 +16,7 @@ It showcases my skills, projects, and provides a way to connect with me.
 
 ## 🚀 Live Demo
 
-👉 [View Live](https://your-deployment-link.vercel.app/)  
-_(Update this link after deployment)_
+👉 [View Live](https://portfolio-bagus.vercel.app/)
 
 ---
 
@@ -33,7 +32,7 @@ _(Update this link after deployment)_
 
 ## 📸 Screenshots
 
-_(Add screenshots here if you want — you can link or embed images of the site)_
+![Homepage](src/assets/portfolio.png)
 
 ---
 
@@ -42,6 +41,6 @@ _(Add screenshots here if you want — you can link or embed images of the site)
 Clone the repo:
 
 ```bash
-git clone https://github.com/yourusername/portfolio-react.git
-cd portfolio-react
+git clone https://github.com/bagustgrh/portfolio.git
+cd portfolio
 ```
