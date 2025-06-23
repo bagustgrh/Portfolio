@@ -26,7 +26,7 @@ const projects = [
     image: portfolioImg,
     description:
       "My personal website, I created this website to display my profile, skills and projects. As well as my place to try new technology.",
-    tech: "Js, HTML, CSS",
+    tech: "React, TailwindCSS",
     github: "https://github.com/bagustgrh/portfolio",
   },
 ];
