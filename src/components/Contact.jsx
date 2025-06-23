@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import {
   FaUser,
@@ -11,15 +11,36 @@ import ContactImage from "../assets/contact.png";
 
 export default function Contact() {
   const form = useRef();
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (email) => {
+    const formatValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!formatValid) {
+      return "Enter an email address with a valid format.";
+    }
+    return "";
+  };
 
   const sendEmail = (e) => {
     e.preventDefault();
+    const emailInput = form.current.querySelector('input[name="email"]');
+    const emailValue = emailInput.value;
+
+    const error = validateEmail(emailValue);
+    if (error) {
+      setEmailError(error);
+      emailInput.focus();
+      return;
+    } else {
+      setEmailError("");
+    }
+
     emailjs
       .sendForm(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         form.current,
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then(
         () => {
@@ -27,7 +48,7 @@ export default function Contact() {
           form.current.reset();
         },
         (error) => {
-          console.error("EmailJS Error:", error); // Tambahkan ini
+          console.error("EmailJS Error:", error);
           alert("Gagal mengirim pesan!");
         }
       );
@@ -55,7 +76,8 @@ export default function Contact() {
               </span>
             </h2>
 
-            <form ref={form} onSubmit={sendEmail}>
+            <form ref={form} onSubmit={sendEmail} noValidate>
+              {/* Name Input */}
               <div className="flex items-center bg-[#1a1a1a] border border-gray-700 rounded px-4 py-2 mb-4">
                 <FaUser className="mr-3 text-white" />
                 <input
@@ -67,7 +89,12 @@ export default function Contact() {
                 />
               </div>
 
-              <div className="flex items-center bg-[#1a1a1a] border border-gray-700 rounded px-4 py-2 mb-4">
+              {/* Email Input + Error */}
+              <div
+                className={`flex items-center border rounded px-4 py-2 ${
+                  emailError ? "border-red-500 mb-1" : "border-gray-700 mb-4"
+                } bg-[#1a1a1a]`}
+              >
                 <FaEnvelope className="mr-3 text-white" />
                 <input
                   type="email"
@@ -75,9 +102,19 @@ export default function Contact() {
                   placeholder="Email"
                   className="bg-transparent w-full outline-none text-white"
                   required
+                  onChange={(e) => {
+                    const err = validateEmail(e.target.value);
+                    setEmailError(err);
+                  }}
                 />
               </div>
+              {emailError && (
+                <p className="text-red-500 text-sm mb-4 flex items-center gap-1">
+                  ⚠️ {emailError}
+                </p>
+              )}
 
+              {/* Message */}
               <div className="flex items-start bg-[#1a1a1a] border border-gray-700 rounded px-4 py-2 mb-4">
                 <FaCommentDots className="mt-1 mr-3 text-white" />
                 <textarea
